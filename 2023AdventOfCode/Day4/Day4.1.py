@@ -11,35 +11,60 @@ for line in data:
     line_list += [fix_line]
 #print (line_list) 
 
-
-def CardsWon(card): 
-    cards_won = []
-    total_matches = 0
-    card_list = re.split('[,|:]',str(card))
+def DoesItWin(line_list):
+    scratchdeck = []
+    for card in line_list:
+        wins = 0
+        card_list = re.split('[,|:]',str(card))
         #Get Winning Numbers    
-    winning_numbers = card_list [1]
-    winning_numbers = str(winning_numbers).split()
+        winning_numbers = card_list [1]
+        winning_numbers = str(winning_numbers).split()
         #Get Your Numbers
-    your_numbers = card_list [2]
-    your_numbers = str(your_numbers).split()
-
-        #Get Game Number
-    game_number = str(card_list[0]).split()
-    game_number = (int(game_number[1]))
-
-
+        your_numbers = card_list [2]
+        your_numbers = str(your_numbers).split()
         #print (your_numbers)
-    for winning_number in winning_numbers:
+        card_id = (card_list[0].split())[1]
+
+        for winning_number in winning_numbers:
             for your_number in your_numbers:
                 if winning_number == your_number:
-                    total_matches += 1
-                    numberofcard = game_number + total_matches
-                    cards_won.append(numberofcard)          
-    return cards_won
+                    wins = wins + 1
+        scratchdeck.append([int(card_id),wins,1])
+    return (scratchdeck)
+
+card_list = DoesItWin(line_list)
+card_index = 0
+total = 0
+for cards in card_list:
+    i = 0
+    card_index = card_index + 1
+    for card in range(cards[2]):
+        wins = cards[1]
+        plays = cards[2]
+        index = card_index
+        while i < wins:
+            #print ("Card:"+str(cards[0])+" "+str(cards)+"- before:"+str(card_list[index+i]))
+            modcard = card_list[index+i]
+            modcard[2] = modcard[2]+1
+            #print ("Card:"+str(cards[0])+" "+str(cards)+"- After:"+str(modcard))
+            i=i+1
+        i = 0
+    total += int(plays)
+    print ("Completed Card: "+str(cards)+" -Number of plays:"+str(plays))
+print (total)
 
 
-cardswon = CardsWon(line_list[0])
-for cards in cardswon:
-    cards = int(cards)-1
-    x = CardsWon(line_list[cards])
-    print (x)
+
+
+
+
+
+
+        
+    
+
+
+               
+
+
+
